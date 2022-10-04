@@ -36,6 +36,7 @@ export async function getStaticProps({ params }) {
 
   return {
     props: { recipe: res.items[0] },
+    revalidate: 1, // (in seconds) - how often nextjs checks for new content after a visit to this page
   };
 }
 
