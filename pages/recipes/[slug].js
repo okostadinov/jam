@@ -22,7 +22,7 @@ export async function getStaticPaths() {
 
   return {
     paths,
-    fallback: true,
+    fallback: true, // is the specified path doesn't exist, fallbacks to another page (if false, goes to 404)
   };
 }
 
@@ -34,6 +34,15 @@ export async function getStaticProps({ params }) {
     content_type: 'recipe',
     'fields.slug': params.slug,
   });
+
+  if (!res.items.length) {
+    return { // if no such content, redirect user to home
+      redirect: {
+        destination: '/',
+        permanent: false // don't default, since in the future the content might be added
+      }
+    }
+  }
 
   return {
     props: { recipe: res.items[0] },
